@@ -22,4 +22,5 @@ categories = [
 
 [build-dependencies]
 anyhow = "1.0.80"
-which = "6.0.3"
+cmake = "0.1"
+git2 = "0.19"

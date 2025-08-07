@@ -4975,3 +4975,67 @@ extern "C" {
                         height: c_int)
                         -> c_int;
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_rgba_to_yuv420_conversion() {
+        // Create a 4x4 red ARGB image
+        let width = 4;
+        let height = 4;
+        let rgba_size = (width * height * 4) as usize;
+
+        // Allocate ARGB buffer and manually set red color
+        let mut rgba_data = vec![0u8; rgba_size];
+
+        // Manually set ARGB values (A=255, R=255, G=0, B=0)
+        for i in (0..rgba_size).step_by(4) {
+            rgba_data[i + 0] = 255; // A
+            rgba_data[i + 1] = 255; // R
+            rgba_data[i + 2] = 0; // G
+            rgba_data[i + 3] = 0; // B
+        }
+
+        // Verify we can use set_plane on a separate test buffer
+        let mut test_buffer = vec![0u8; 16]; // 4x4 single channel
+        unsafe {
+            set_plane(
+                test_buffer.as_mut_ptr() as *const u8,
+                4, // stride
+                4, // width
+                4, // height
+                42 // test value
+            );
+        }
+        // Verify set_plane worked
+        assert_eq!(test_buffer[0], 42, "set_plane should set first pixel");
+        println!("✓ set_plane verification successful: {:?}",
+                 &test_buffer[0..4]);
+
+        // Allocate YUV420 buffers
+        let y_size = (width * height) as usize;
+        let uv_size = (width * height / 4) as usize;
+
+        let mut y_data = vec![0u8; y_size];
+        let mut u_data = vec![0u8; uv_size];
+        let mut v_data = vec![0u8; uv_size];
+
+        // Convert ARGB to YUV420 (I420)
+        unsafe {
+            let result = argb_to_i420(rgba_data.as_ptr(),
+                                      width * 4, // stride for ARGB
+                                      y_data.as_mut_ptr() as *const u8,
+                                      width, // Y stride
+                                      u_data.as_mut_ptr() as *const u8,
+                                      width / 2, // U stride
+                                      v_data.as_mut_ptr() as *const u8,
+                                      width / 2, // V stride
+                                      width,
+                                      height);
+
+            assert_eq!(result, 0, "Conversion should succeed");
+        }
+    }
+}
