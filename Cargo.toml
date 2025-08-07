@@ -1,6 +1,6 @@
 [package]
 name = "libyuv"
-version = "1.0.2"
+version = "1.0.3-lookback00"
 edition = "2021"
 authors = [ "Mr.Panda <xivistudios@gmail.com>" ]
 description = "Raw FFI bindings to libyuv libraries."
@@ -12,6 +12,7 @@ keywords = [
     "libyuv",
     "ffi"
 ]
+publish = ["lookback"]
 
 categories = [
     "multimedia",
