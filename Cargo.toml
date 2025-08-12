@@ -23,4 +23,6 @@ categories = [
 [build-dependencies]
 anyhow = "1.0.80"
 cmake = "0.1"
-git2 = "0.19"
+ureq = "3.0"
+tar = "0.4"
+flate2 = "1.0"
