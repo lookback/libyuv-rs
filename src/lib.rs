@@ -4974,6 +4974,23 @@ extern "C" {
                         width: c_int,
                         height: c_int)
                         -> c_int;
+
+    #[link_name = "J420ToI420"]
+    pub fn j420_to_i420(src_y: *const u8,
+                        src_stride_y: c_int,
+                        src_u: *const u8,
+                        src_stride_u: c_int,
+                        src_v: *const u8,
+                        src_stride_v: c_int,
+                        dst_y: *const u8,
+                        dst_stride_y: c_int,
+                        dst_u: *const u8,
+                        dst_stride_u: c_int,
+                        dst_v: *const u8,
+                        dst_stride_v: c_int,
+                        width: c_int,
+                        height: c_int)
+                        -> c_int;
 }
 
 #[cfg(test)]
